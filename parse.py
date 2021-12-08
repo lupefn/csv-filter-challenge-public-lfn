@@ -26,7 +26,7 @@ def validateInput(c):
 				return userInput
 	elif c == 2:
 		while True:
-			userInput = input("Enter the last name to filter by:")
+			userInput = input("Enter the last name to filter by: ")
 			if any(char.isdigit() for char in userInput):
 				print("Please enter a valid last name.")
 			else:
@@ -34,7 +34,7 @@ def validateInput(c):
 	else:
 		while True:
 			try:
-				userInput = int(input("Please enter the birthday that you'd like to filter by."))
+				userInput = int(input("Please enter the birthday that you'd like to filter by: "))
 				if len(str(userInput)) != 8:
 					print("Please enter a valid length DOB.")
 				else:
@@ -53,7 +53,7 @@ def main():
 
 	printMenu()
 	validChoice = validateChoices()
-
+	validInput = validateInput(validChoice)
 
 
 if __name__ == "__main__":

@@ -1,5 +1,4 @@
-import sys
-import pandas as pd
+import sys, pandas
 validChoices = [1,2,3]
 def printMenu():
 	print("By what category would you like to filter the data by?")
@@ -18,20 +17,17 @@ def validateChoices():
 			print("Your choice was invalid. Please enter an integer value.")
 	return userChoice
 def validateInput(c):
+	def validateNames(nameSearch):
+		while True:
+			name = input("Enter the " + nameSearch + " name to filter by: ")
+			if any(char.isdigit() or char == " " for char in name):
+				print("Please enter a valid" + nameSearch + " name.")
+			else:
+				return name.lower().capitalize()
 	if c == 1:
-		while True:
-			userInput = input("Enter the first name to filter by: ")
-			if any(char.isdigit() or char == " " for char in userInput):
-				print("Please enter a valid first name.")
-			else:
-				return userInput.lower().capitalize()
+		return validateNames("first")
 	elif c == 2:
-		while True:
-			userInput = input("Enter the last name to filter by: ")
-			if any(char.isdigit() or char == " " for char in userInput):
-				print("Please enter a valid last name.")
-			else:
-				return userInput.lower().capitalize()
+		return validateNames("last")
 	else:
 		while True:
 			try:
@@ -57,7 +53,7 @@ def main():
 		sys.exit()
 
 	pathToCSVData = sys.argv[1]
-	csvData = pd.read_csv(pathToCSVData)
+	csvData = pandas.read_csv(pathToCSVData)
 
 	printMenu()
 	validChoice = validateChoices()

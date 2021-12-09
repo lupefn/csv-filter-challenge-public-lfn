@@ -41,7 +41,6 @@ def validateInput(c):
 def getFilteredData(csv, choice, validInp):
 	if choice == 1:
 		filtCSV = csv[(csv.first_name == validInp)]
-		return filtCSV
 	elif choice == 2:
 		filtCSV = csv[(csv.last_name == validInp)]
 	else:

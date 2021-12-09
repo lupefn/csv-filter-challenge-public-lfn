@@ -1,4 +1,5 @@
 import sys
+import pandas as pd
 validChoices = [1,2,3]
 def printMenu():
 	print("By what category would you like to filter the data by?")
@@ -20,17 +21,17 @@ def validateInput(c):
 	if c == 1:
 		while True:
 			userInput = input("Enter the first name to filter by: ")
-			if any(char.isdigit() for char in userInput):
+			if any(char.isdigit() or char == " " for char in userInput):
 				print("Please enter a valid first name.")
 			else:
-				return userInput
+				return userInput.lower().capitalize()
 	elif c == 2:
 		while True:
 			userInput = input("Enter the last name to filter by: ")
-			if any(char.isdigit() for char in userInput):
+			if any(char.isdigit() or char == " " for char in userInput):
 				print("Please enter a valid last name.")
 			else:
-				return userInput
+				return userInput.lower().capitalize()
 	else:
 		while True:
 			try:
@@ -41,20 +42,34 @@ def validateInput(c):
 					return userInput
 			except ValueError:
 				print("Please enter a valid DOB.")
-
+def getFilteredData(csv, choice, validInp):
+	if choice == 1:
+		filtCSV = csv[(csv.first_name == validInp)]
+		return filtCSV
+	elif choice == 2:
+		filtCSV = csv[(csv.last_name == validInp)]
+	else:
+		filtCSV = csv[(csv.dob == validInp)]
+	return filtCSV.values.tolist()
 def main():
 	if len(sys.argv) != 2:
 		print("USAGE: DIR_TO_CSV_DATA")
 		sys.exit()
 
 	pathToCSVData = sys.argv[1]
-	with open(pathToCSVData) as file:
-		lines = file.read().split("\n")
+	csvData = pd.read_csv(pathToCSVData)
 
 	printMenu()
 	validChoice = validateChoices()
 	validInput = validateInput(validChoice)
 
+	filteredCSV = getFilteredData(csvData, validChoice, validInput)
+	if filteredCSV == []:
+		print("There were no matches to your input.")
+	else:
+		print("Here are the following matches to your query (first_name, last_name, dob):")
+		for query in filteredCSV:
+			print(query)
 
 if __name__ == "__main__":
 	main()
